@@ -28,9 +28,7 @@
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
 
-            <Entry x:Name="ExerciseInput" Placeholder="Enter exercise name" />
-            <Button Text="Add Exercise" Clicked="OnAddExerciseClicked" />
-            <Label x:Name="ExerciseLabel" Text="" />
+            <Picker x:Name="ExercisePicker" Title="Select Exercise" />
 
 
         </VerticalStackLayout>
