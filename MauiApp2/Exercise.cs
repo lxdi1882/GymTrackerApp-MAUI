@@ -6,3 +6,4 @@ public class Exercise
     public string MuscleGroup { get; set; }
     public string SubTarget { get; set; }
 }
+
