@@ -41,8 +41,14 @@ public partial class MainPage : ContentPage
             return;
         }
 
-        double weight = double.Parse(WeightInput.Text);
-        int reps = int.Parse(RepsInput.Text);
+        bool weightValid = double.TryParse(WeightInput.Text, out double weight);
+        bool repsValid = int.TryParse(RepsInput.Text, out int reps);
+
+        if (!weightValid || !repsValid)
+        {
+            SetsLabel.Text = " please enter a valid numbers for weight and reps.";
+            return;
+        }
         
         var newSet = new SetEntry{Weight = weight, Reps = reps};
         
