@@ -29,6 +29,13 @@
 
 
             <Picker x:Name="ExercisePicker" Title="Select Exercise" />
+            
+            
+            
+            <Entry x:Name= "WeightInput" Placeholder="Weight (kg)" Keyboard="Numeric" />
+            <Entry x:Name="RepsInput" Placeholder="Reps" Keyboard="Numeric" />
+            <Button Text="Add Set" Clicked="OnAddSetClicked"/>
+            <Label x:Name ="SetsLabel" Text="" />
 
 
         </VerticalStackLayout>
