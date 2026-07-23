@@ -29,7 +29,7 @@ public partial class MainPage : ContentPage
     //
     //     ExerciseInput.Text = "";
     // }
-    
+    private List<WorkoutSession> completedSessions = new List<WorkoutSession>();
     private Dictionary<string, ExerciseEntry> workoutInProgress = new Dictionary<string, ExerciseEntry>();
 
     private void OnAddSetClicked(object sender, EventArgs e)
@@ -87,13 +87,29 @@ public partial class MainPage : ContentPage
         {
             Date = DateTime.Now,
             Exercises = workoutInProgress.Values.ToList()
+           
         };
-        
+        completedSessions.Add(session);
         SetsLabel.Text = $"Workout Session: Saved! {session.Exercises.Count} exercises logged.";
         workoutInProgress.Clear();
     }
-    
-        
+
+    private void OnViewHistoryClicked(object sender, EventArgs e)
+    {
+       string summary  = "";
+       foreach (var session in completedSessions)
+       {
+           summary += $"\n Date: {session.Date} \n";
+           foreach (var entry in session.Exercises)
+           {
+               summary += $"\n\n {entry.Exercise.Name}: \n";
+               foreach (var set in entry.Sets)
+               {
+                   summary += $" {set.Weight}kg X {set.Reps} reps \n";
+               }
+           }
+       } HistoryLabel.Text =  summary;
+    }
 
     
 }

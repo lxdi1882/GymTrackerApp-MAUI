@@ -40,6 +40,9 @@
             
             <Button Text="Finish Workout" Clicked="OnFinishWorkoutClicked" />
             
+            <Button Text="View History" Clicked="OnViewHistoryClicked" />
+            <Label x:Name="HistoryLabel" Text="" />
+            
         </VerticalStackLayout>
     </ScrollView>
 
