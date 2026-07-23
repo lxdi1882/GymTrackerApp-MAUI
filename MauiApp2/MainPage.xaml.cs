@@ -76,9 +76,21 @@ public partial class MainPage : ContentPage
         }
         SetsLabel.Text = summary;
 
-        WeightInput.Text = "";
+       
         RepsInput.Text = "";
     
+    }
+
+    private void OnFinishWorkoutClicked(object sender, EventArgs e)
+    {
+        var session = new WorkoutSession
+        {
+            Date = DateTime.Now,
+            Exercises = workoutInProgress.Values.ToList()
+        };
+        
+        SetsLabel.Text = $"Workout Session: Saved! {session.Exercises.Count} exercises logged.";
+        workoutInProgress.Clear();
     }
     
         

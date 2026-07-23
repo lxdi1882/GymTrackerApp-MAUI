@@ -37,7 +37,9 @@
             <Button Text="Add Set" Clicked="OnAddSetClicked"/>
             <Label x:Name ="SetsLabel" Text="" />
 
-
+            
+            <Button Text="Finish Workout" Clicked="OnFinishWorkoutClicked" />
+            
         </VerticalStackLayout>
     </ScrollView>
 
