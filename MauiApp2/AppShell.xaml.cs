@@ -1,4 +1,4 @@
-﻿namespace MauiApp2;
+﻿namespace MauiApp2.Data;
 
 public partial class AppShell : Shell
 {

@@ -1,36 +1,23 @@
-﻿namespace MauiApp2;
+﻿using MauiApp2.Data;
+using MauiApp2.Data.Models;
+using MauiApp2.Services;
+
+namespace MauiApp2;
 
 public partial class MainPage : ContentPage
 {
-    private int count = 0;
+    
+    private WorkoutService workoutService = new WorkoutService();
 
     public MainPage()
     {
+        
         InitializeComponent();
         ExercisePicker.ItemsSource = ExerciseLibrary.All.Select(e => e.Name).ToList();
     }
 
 
-    // private void OnAddExerciseClicked(object? sender, EventArgs e)
-    // {
-    //     var exerciseName = ExerciseInput.Text;
-    //
-    //     var exerciseLabel = new Label { Text = $"Exercise: {exerciseName}" };
-    //     var logButton = new Button { Text = $"Log : {exerciseName}" };
-    //
-    //     logButton.Clicked += (s, args) =>
-    //     {
-    //         exerciseLabel.Text = $"{exerciseName} - logged!";
-    //         logButton.IsEnabled = false;
-    //     };
-    //
-    //     MainStack.Children.Add(exerciseLabel);
-    //     MainStack.Children.Add(logButton);
-    //
-    //     ExerciseInput.Text = "";
-    // }
-    private List<WorkoutSession> completedSessions = new List<WorkoutSession>();
-    private Dictionary<string, ExerciseEntry> workoutInProgress = new Dictionary<string, ExerciseEntry>();
+  
 
     private void OnAddSetClicked(object sender, EventArgs e)
     {
@@ -50,65 +37,24 @@ public partial class MainPage : ContentPage
             return;
         }
         
-        var newSet = new SetEntry{Weight = weight, Reps = reps};
+        workoutService.AddSet(selectedName, weight, reps);
+        SetsLabel.Text = workoutService.GetWorkoutSummary();
         
-        if (!workoutInProgress.ContainsKey(selectedName))
-        {
-            var exercise = ExerciseLibrary.All.First(ex => ex.Name == selectedName);
-            workoutInProgress[selectedName] = new ExerciseEntry
-            {
-                Exercise = exercise,
-                Sets = new List<SetEntry>()
-            };
-        }
-
-        workoutInProgress[selectedName].Sets.Add(newSet);
-
-        // rebuild the display from everything tracked so far
-        string summary = "";
-        foreach (var entry in workoutInProgress.Values)
-        {
-            summary += $"\n{entry.Exercise.Name} ({entry.Exercise.MuscleGroup}):\n";
-            foreach (var set in entry.Sets)
-            {
-                summary += $"  {set.Weight}kg x {set.Reps} reps\n ";
-            }
-        }
-        SetsLabel.Text = summary;
-
-       
         RepsInput.Text = "";
     
     }
 
     private void OnFinishWorkoutClicked(object sender, EventArgs e)
     {
-        var session = new WorkoutSession
-        {
-            Date = DateTime.Now,
-            Exercises = workoutInProgress.Values.ToList()
-           
-        };
-        completedSessions.Add(session);
-        SetsLabel.Text = $"Workout Session: Saved! {session.Exercises.Count} exercises logged.";
-        workoutInProgress.Clear();
+        int exerciseCount = workoutService.FinishWorkout();
+
+        SetsLabel.Text = $"Workout Session: Saved! {exerciseCount} exercises logged.";
     }
+    
 
     private void OnViewHistoryClicked(object sender, EventArgs e)
     {
-       string summary  = "";
-       foreach (var session in completedSessions)
-       {
-           summary += $"\n Date: {session.Date} \n";
-           foreach (var entry in session.Exercises)
-           {
-               summary += $"\n\n {entry.Exercise.Name}: \n";
-               foreach (var set in entry.Sets)
-               {
-                   summary += $" {set.Weight}kg X {set.Reps} reps \n";
-               }
-           }
-       } HistoryLabel.Text =  summary;
+        HistoryLabel.Text = workoutService.GetHistory();
     }
 
     

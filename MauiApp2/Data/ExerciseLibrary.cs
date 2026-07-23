@@ -1,4 +1,6 @@
-﻿namespace MauiApp2;
+﻿using MauiApp2.Data.Models;
+
+namespace MauiApp2.Data;
 
 public class ExerciseLibrary
 {
