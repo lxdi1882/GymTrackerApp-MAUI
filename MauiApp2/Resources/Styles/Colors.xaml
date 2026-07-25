@@ -13,6 +13,18 @@
     <Color x:Key="SecondaryDarkText">#9880e5</Color>
     <Color x:Key="Tertiary">#2B0B98</Color>
 
+    <!-- Monster-style theme -->
+    <Color x:Key="AppBackground">#0D0D0D</Color>
+    <Color x:Key="AppSurface">#1A1A1A</Color>
+    <Color x:Key="AppAccent">#8CE500</Color>
+    <Color x:Key="AppAccentDark">#6BB300</Color>
+    <Color x:Key="AppTextPrimary">#FFFFFF</Color>
+    <Color x:Key="AppTextSecondary">#A0A0A0</Color>
+
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource AppBackground}" />
+    <SolidColorBrush x:Key="AppSurfaceBrush" Color="{StaticResource AppSurface}" />
+    <SolidColorBrush x:Key="AppAccentBrush" Color="{StaticResource AppAccent}" />
+    
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
     <Color x:Key="Magenta">#D600AA</Color>

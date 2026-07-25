@@ -2,7 +2,7 @@
 using MauiApp2.Data.Models;
 using MauiApp2.Services;
 
-namespace MauiApp2;
+namespace MauiApp2.Views;
 
 public partial class MainPage : ContentPage
 {
@@ -61,11 +61,11 @@ public partial class MainPage : ContentPage
     }
     
 
-    private async void OnViewHistoryClicked(object sender, EventArgs e)
-    {
-        
-        HistoryLabel.Text = await workoutService.GetHistoryAsync();
-    }
+    // private async void OnViewHistoryClicked(object sender, EventArgs e)
+    // {
+    //     
+    //     HistoryLabel.Text = await workoutService.GetHistoryAsync();
+    // }
 
     
 }

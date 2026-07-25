@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Shell
     x:Class="MauiApp2.Data.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:MauiApp2"
+    xmlns:views="clr-namespace:MauiApp2.Views"
     Title="MauiApp2">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <ShellContent
+            Title="Home"
+            Icon="dotnet_bot.png"
+            ContentTemplate="{DataTemplate views:MainPage}"
+            Route="MainPage"
+            Shell.NavBarIsVisible="False" />
+
+        <ShellContent
+            Title="History"
+            Icon="dotnet_bot.png"
+            ContentTemplate="{DataTemplate views:HistoryPage}"
+            Route="HistoryPage"
+            Shell.NavBarIsVisible="False" />
+    </TabBar>
 
 </Shell>
