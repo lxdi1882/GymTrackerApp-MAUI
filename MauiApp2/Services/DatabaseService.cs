@@ -78,4 +78,33 @@ public class DatabaseService
         await _db.InsertAsync(set);
     }
     
+    public async Task<List<WorkoutSession>> GetAllSessionsAsync()
+    {
+        await Init();
+        return await _db.Table<WorkoutSession>().ToListAsync();
+    }
+    
+    public async Task<List<ExerciseLog>> GetLogsForSessionAsync(int sessionId)
+    {
+        await Init();
+        return await _db.Table<ExerciseLog>()
+            .Where(log => log.WorkoutSessionId == sessionId)
+            .ToListAsync();
+    }
+    
+    public async Task<List<SetEntry>> GetSetsForLogAsync(int logId)
+    {
+        await Init();
+        return await _db.Table<SetEntry>()
+            .Where(set => set.ExerciseLogId == logId)
+            .ToListAsync();
+    }
+    
+    public async Task<Exercise> GetExerciseByIdAsync(int id)
+    {
+        await Init();
+        return await _db.Table<Exercise>().FirstOrDefaultAsync(e => e.Id == id);
+    }
+    
+    
 }

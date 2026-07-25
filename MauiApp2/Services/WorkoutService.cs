@@ -110,9 +110,32 @@ public class WorkoutService
     //
     //     return count;
     // }
-    public string GetHistory()
+    public async Task<string> GetHistoryAsync()
     {
-        return "History coming soon";
+        var sessions = await _db.GetAllSessionsAsync();
+        string summary = "";
+
+        foreach (var session in sessions)
+        {
+            summary += $"\nDate: {session.Date} \n";
+            
+            var logs = await _db.GetLogsForSessionAsync(session.Id);
+
+            foreach (var log in logs)
+            {
+                var exercise = await _db.GetExerciseByIdAsync(log.ExerciseId);
+                summary += $"\n{exercise.Name}: \n";
+                
+                var sets = await _db.GetSetsForLogAsync(log.Id);
+
+                foreach (var set in sets)
+                {
+                    summary += $"{set.Weight}kg x {set.Reps} reps \n";
+                }
+            }
+        }
+        
+        return summary;
     }
     // public string GetHistory()
     // {

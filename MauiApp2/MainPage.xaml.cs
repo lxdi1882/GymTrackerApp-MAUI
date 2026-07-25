@@ -61,9 +61,10 @@ public partial class MainPage : ContentPage
     }
     
 
-    private void OnViewHistoryClicked(object sender, EventArgs e)
+    private async void OnViewHistoryClicked(object sender, EventArgs e)
     {
-        HistoryLabel.Text = workoutService.GetHistory();
+        
+        HistoryLabel.Text = await workoutService.GetHistoryAsync();
     }
 
     
