@@ -6,8 +6,15 @@ namespace MauiApp2.Services;
 
 public class WorkoutService
 {
-    private List<WorkoutSession> completedSessions = new List<WorkoutSession>();
+    
+    
+    private readonly DatabaseService _db;
     private Dictionary<string, ExerciseEntry> workoutInProgress = new Dictionary<string, ExerciseEntry>();
+    
+    public WorkoutService(DatabaseService db)
+    {
+        _db = db;
+    }
     
     public string GetWorkoutSummary()
     {
@@ -50,11 +57,19 @@ public class WorkoutService
         
         return true;
     }
-    
-    public int FinishWorkout()
+
+    public async Task<int> FinishWorkoutAsync()
     {
+        var session = new WorkoutSession
+        {
+            Date = DateTime.Now
+        };
+        
+        await _db.AddWorkoutSessionAsync(session);
+        System.Diagnostics.Debug.WriteLine($"Saved session with Id: {session.Id}");
         int count = workoutInProgress.Count;
         workoutInProgress.Clear();
+        
         return count;
     }
     

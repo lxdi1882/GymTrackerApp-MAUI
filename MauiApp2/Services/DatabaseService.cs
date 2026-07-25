@@ -55,4 +55,10 @@ public class DatabaseService
         }
     }
     
+    public async Task AddWorkoutSessionAsync(WorkoutSession session)
+    {
+        await Init();
+        await _db.InsertAsync(session);
+    }
+    
 }

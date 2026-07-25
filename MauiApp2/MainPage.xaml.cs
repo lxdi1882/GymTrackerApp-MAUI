@@ -7,13 +7,13 @@ namespace MauiApp2;
 public partial class MainPage : ContentPage
 {
     
-    private WorkoutService workoutService = new WorkoutService();
     private DatabaseService databaseService = new DatabaseService();
+    private WorkoutService workoutService;
     public MainPage()
     {
         
         InitializeComponent();
-       
+        workoutService = new WorkoutService(databaseService);
         TestDatabase();
     }
 
@@ -53,10 +53,10 @@ public partial class MainPage : ContentPage
     
     }
 
-    private void OnFinishWorkoutClicked(object sender, EventArgs e)
+    private async void OnFinishWorkoutClicked(object sender, EventArgs e)
     {
-        int exerciseCount = workoutService.FinishWorkout();
-
+        int exerciseCount = await workoutService.FinishWorkoutAsync();
+       
         SetsLabel.Text = $"Workout Session: Saved! {exerciseCount} exercises logged.";
     }
     
