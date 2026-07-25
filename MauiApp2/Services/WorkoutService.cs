@@ -159,6 +159,39 @@ public class WorkoutService
     //     return summary;
     // }
     
+    public async Task<List<WorkoutDaySummary>> GetWorkoutDaySummariesAsync()
+    {
+        var sessions = await _db.GetAllSessionsAsync();
+        var summaries = new List<WorkoutDaySummary>();
+
+        foreach (var session in sessions)
+        {
+            var logs = await _db.GetLogsForSessionAsync(session.Id);
+            var exerciseNames = new List<string>();
+            int totalSets = 0;
+
+            foreach (var log in logs)
+            {
+                var exercise = await _db.GetExerciseByIdAsync(log.ExerciseId);
+                exerciseNames.Add(exercise.Name);
+
+                var sets = await _db.GetSetsForLogAsync(log.Id);
+                totalSets += sets.Count;
+            }
+
+            summaries.Add(new WorkoutDaySummary
+            {
+                SessionId = session.Id,
+                DayLabel = "Workout",         // placeholder until Program tables exist
+                Date = session.Date,
+                ExerciseNames = exerciseNames,
+                TotalSets = totalSets,
+                IsExpanded = false
+            });
+        }
+
+        return summaries;
+    }
     
 }
 
