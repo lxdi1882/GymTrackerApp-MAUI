@@ -8,15 +8,22 @@ public partial class MainPage : ContentPage
 {
     
     private WorkoutService workoutService = new WorkoutService();
-
+    private DatabaseService databaseService = new DatabaseService();
     public MainPage()
     {
         
         InitializeComponent();
         ExercisePicker.ItemsSource = ExerciseLibrary.All.Select(e => e.Name).ToList();
+        TestDatabase();
     }
 
+    private async void TestDatabase()
+    {
+        await databaseService.SeedExercisesAsync();
 
+        var exercises = await databaseService.GetExercisesAsync();
+        System.Diagnostics.Debug.WriteLine($"Count: {exercises.Count}");
+    }
   
 
     private void OnAddSetClicked(object sender, EventArgs e)
