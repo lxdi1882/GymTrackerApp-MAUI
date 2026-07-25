@@ -13,7 +13,7 @@ public partial class MainPage : ContentPage
     {
         
         InitializeComponent();
-        ExercisePicker.ItemsSource = ExerciseLibrary.All.Select(e => e.Name).ToList();
+       
         TestDatabase();
     }
 
@@ -22,6 +22,8 @@ public partial class MainPage : ContentPage
         await databaseService.SeedExercisesAsync();
 
         var exercises = await databaseService.GetExercisesAsync();
+        ExercisePicker.ItemsSource = exercises.Select(e => e.Name).ToList();
+        
         System.Diagnostics.Debug.WriteLine($"Count: {exercises.Count}");
     }
   
