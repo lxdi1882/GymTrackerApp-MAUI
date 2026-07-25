@@ -1,6 +1,5 @@
 ﻿using SQLite;
-
-namespace MauiApp2.Models;
+namespace MauiApp2.Data.Models;
 
 public class ExerciseLog
 {

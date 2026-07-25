@@ -64,12 +64,33 @@ public class WorkoutService
         {
             Date = DateTime.Now
         };
-        
+
         await _db.AddWorkoutSessionAsync(session);
-        System.Diagnostics.Debug.WriteLine($"Saved session with Id: {session.Id}");
+
+        foreach (var entry in workoutInProgress.Values)
+        {
+            var exercise = await _db.GetExerciseByNameAsync(entry.Exercise.Name);
+
+            var log = new ExerciseLog
+            {
+                WorkoutSessionId = session.Id,
+                ExerciseId = exercise.Id
+            };
+
+            await _db.AddExerciseLogAsync(log);
+            foreach (var set in entry.Sets)
+            {
+                set.ExerciseLogId = log.Id;
+                await _db.AddSetEntryAsync(set);
+                System.Diagnostics.Debug.WriteLine($"Saved set: LogId={set.ExerciseLogId}, Weight={set.Weight}, Reps={set.Reps}, SetId={set.Id}");
+            }
+            
+            System.Diagnostics.Debug.WriteLine($"Saved log: SessionId={log.WorkoutSessionId}, ExerciseId={log.ExerciseId}, LogId={log.Id}");
+        }
+
         int count = workoutInProgress.Count;
         workoutInProgress.Clear();
-        
+
         return count;
     }
     

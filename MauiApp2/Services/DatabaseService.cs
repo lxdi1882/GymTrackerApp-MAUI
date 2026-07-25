@@ -1,5 +1,4 @@
 ﻿using MauiApp2.Data.Models;
-using MauiApp2.Models;
 using SQLite;
 using MauiApp2.Data;
 
@@ -59,6 +58,24 @@ public class DatabaseService
     {
         await Init();
         await _db.InsertAsync(session);
+    }
+    
+    public async Task<Exercise> GetExerciseByNameAsync(string name)
+    {
+        await Init();
+        return await _db.Table<Exercise>().FirstOrDefaultAsync(e => e.Name == name);
+    }
+    
+    public async Task AddExerciseLogAsync(ExerciseLog log)
+    {
+        await Init();
+        await _db.InsertAsync(log);
+    }
+    
+    public async Task AddSetEntryAsync(SetEntry set)
+    {
+        await Init();
+        await _db.InsertAsync(set);
     }
     
 }
