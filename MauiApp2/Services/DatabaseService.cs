@@ -106,5 +106,102 @@ public class DatabaseService
         return await _db.Table<Exercise>().FirstOrDefaultAsync(e => e.Id == id);
     }
     
+// GYM TRACKER — DatabaseService.cs additions
+
+public async Task<List<(Exercise Exercise, SetEntry Set, DateTime Date)>> GetRecentPRsAsync(int daysBack = 7)
+{
+    await Init();
+
+    var cutoff = DateTime.Now.AddDays(-daysBack);
+    var sessions = await _db.Table<WorkoutSession>()
+        .Where(s => s.Date >= cutoff)
+        .ToListAsync();
+
+    var prs = new List<(Exercise, SetEntry, DateTime)>();
+
+    foreach (var session in sessions)
+    {
+        var logs = await GetLogsForSessionAsync(session.Id);
+
+        foreach (var log in logs)
+        {
+            var exercise = await GetExerciseByIdAsync(log.ExerciseId);
+            var sets = await GetSetsForLogAsync(log.Id);
+            double previousBest = await GetBestWeightBeforeDateAsync(log.ExerciseId, session.Date);
+
+            foreach (var set in sets)
+            {
+                if (set.Weight > previousBest)
+                {
+                    prs.Add((exercise, set, session.Date));
+                    previousBest = set.Weight; // don't re-flag smaller sets in the same session
+                }
+            }
+        }
+    }
+
+    return prs;
+}
+
+private async Task<double> GetBestWeightBeforeDateAsync(int exerciseId, DateTime beforeDate)
+{
+    await Init();
+
+    var logs = await _db.Table<ExerciseLog>()
+        .Where(l => l.ExerciseId == exerciseId)
+        .ToListAsync();
+
+    double best = 0;
+
+    foreach (var log in logs)
+    {
+        var session = await _db.Table<WorkoutSession>()
+            .FirstOrDefaultAsync(s => s.Id == log.WorkoutSessionId);
+
+        if (session == null || session.Date >= beforeDate)
+            continue;
+
+        var sets = await GetSetsForLogAsync(log.Id);
+        if (sets.Any())
+            best = Math.Max(best, sets.Max(s => s.Weight));
+    }
+
+    return best;
+}
+
+public async Task<int> GetStreakAsync()
+{
+    await Init();
+
+    var trainingDays = (await _db.Table<WorkoutSession>().ToListAsync())
+        .Select(s => s.Date.Date)
+        .Distinct()
+        .OrderByDescending(d => d)
+        .ToList();
+
+    if (trainingDays.Count == 0)
+        return 0;
+
+    var expected = DateTime.Today;
+    if (!trainingDays.Contains(expected))
+        expected = expected.AddDays(-1); // no workout today yet, still counts from yesterday
+
+    int streak = 0;
+    foreach (var day in trainingDays)
+    {
+        if (day == expected)
+        {
+            streak++;
+            expected = expected.AddDays(-1);
+        }
+        else if (day < expected)
+        {
+            break;
+        }
+    }
+
+    return streak;
+}
+    
     
 }

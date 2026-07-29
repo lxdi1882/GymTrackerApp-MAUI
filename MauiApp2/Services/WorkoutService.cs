@@ -190,7 +190,7 @@ public class WorkoutService
             });
         }
 
-        return summaries;
+        return summaries.OrderByDescending(s => s.Date).ToList();
     }
     
 }

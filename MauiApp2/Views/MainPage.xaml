@@ -18,7 +18,7 @@
             <!-- Log a Set card -->
             <Frame
                 Padding="16"
-                CornerRadius="2"
+                CornerRadius="12"
                 BackgroundColor="{StaticResource AppSurface}"
                 BorderColor="{StaticResource AppAccent}"
                 HasShadow="True">
@@ -47,7 +47,7 @@
             <!-- Current workout summary -->
             <Frame
                 Padding="16"
-                CornerRadius="2"
+                CornerRadius="12"
                 BackgroundColor="{StaticResource AppSurface}"
                 BorderColor="LightGray"
                 HasShadow="True">

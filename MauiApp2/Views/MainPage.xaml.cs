@@ -23,8 +23,17 @@ public partial class MainPage : ContentPage
 
         var exercises = await databaseService.GetExercisesAsync();
         ExercisePicker.ItemsSource = exercises.Select(e => e.Name).ToList();
-        
+
         System.Diagnostics.Debug.WriteLine($"Count: {exercises.Count}");
+
+        // sanity check the new methods
+        int streak = await databaseService.GetStreakAsync();
+        System.Diagnostics.Debug.WriteLine($"Streak: {streak}");
+
+        var prs = await databaseService.GetRecentPRsAsync();
+        System.Diagnostics.Debug.WriteLine($"PR count: {prs.Count}");
+        foreach (var pr in prs)
+            System.Diagnostics.Debug.WriteLine($"PR: {pr.Exercise.Name} - {pr.Set.Weight}kg x {pr.Set.Reps} on {pr.Date:d}");
     }
   
 
@@ -59,6 +68,8 @@ public partial class MainPage : ContentPage
        
         SetsLabel.Text = $"Workout Session: Saved! {exerciseCount} exercises logged.";
     }
+    
+    
     
 
     // private async void OnViewHistoryClicked(object sender, EventArgs e)

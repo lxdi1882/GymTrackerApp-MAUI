@@ -10,8 +10,8 @@
         <ShellContent
             Title="Home"
             Icon="dotnet_bot.png"
-            ContentTemplate="{DataTemplate views:MainPage}"
-            Route="MainPage"
+            ContentTemplate="{DataTemplate views:HomePage}"
+            Route="HomePage"
             Shell.NavBarIsVisible="False" />
 
         <ShellContent

@@ -9,7 +9,7 @@
                 <DataTemplate>
                     <Frame
                         Padding="16"
-                        CornerRadius="2"
+                        CornerRadius="12"
                         BackgroundColor="{StaticResource AppSurface}"
                         BorderColor="{StaticResource AppAccent}"
                         HasShadow="True">
